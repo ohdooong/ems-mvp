@@ -1,0 +1,9 @@
+{
+  "device_id": "D-1001",
+  "site_id": "SITE-A",
+  "zone_id": "ZONE-01",
+  "power_usage": 123.45,
+  "status": "NORMAL",
+  "event_time": "2026-03-25T10:00:01Z",
+  "ingestion_time": "2026-03-25T10:00:03Z"
+}
