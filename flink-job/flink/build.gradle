@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'application'
+}
+
+group = 'org.example.ems'
+version = '1.0.1-SNAPSHOT'
+
+repositories {
+    gradlePluginPortal()
+    mavenCentral()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+ext {
+    flinkVersion =                  '1.19.1'
+    flinkKafkaConnectorVersion =    '3.2.0-1.19'
+    flinkJdbcConnectorVersion =     '3.2.0-1.19'
+    jacksonVersion =                '2.17.1'
+    postgresqlVersion =             '42.7.3'
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:6.0.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Flink core
+    compileOnly "org.apache.flink:flink-streaming-java:${flinkVersion}"
+    compileOnly "org.apache.flink:flink-clients:${flinkVersion}"
+
+    // Connectors
+    implementation "org.apache.flink:flink-connector-kafka:${flinkKafkaConnectorVersion}"
+    implementation "org.apache.flink:flink-connector-jdbc:${flinkJdbcConnectorVersion}"
+
+    // Postgresql
+    implementation "org.postgresql:postgresql:${postgresqlVersion}"
+}
+
+application {
+    mainClass = 'com.example.ems.SensorLatestJob'
+}
+
+shadowJar {
+    archiveBaseName.set('ems-flink-job')
+    archiveClassifier.set('')
+    archiveVersion.set('1.0.0')
+
+    mergeServiceFiles()
+}
+
+test {
+    useJUnitPlatform()
+}

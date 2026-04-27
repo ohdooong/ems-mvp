@@ -6,7 +6,7 @@ services:
     container_name: ems-zookeeper
     hostname: zookeeper
     ports:
-      - "2181:2181"
+      - "3181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -64,7 +64,7 @@ services:
         jobmanager.rpc.address: jobmanager
         parallelism.default: 1
     volumes:
-      - ./flink-job:/opt/flink/usrlib
+      - ./flink-job/flink/build/libs:/opt/flink/usrlib
     networks:
       - ems-net
 
@@ -81,7 +81,7 @@ services:
         taskmanager.numberOfTaskSlots: 4
         parallelism.default: 1
     volumes:
-      - ./flink-job:/opt/flink/usrlib
+      - ./flink-job/flink/build/libs:/opt/flink/usrlib
     networks:
       - ems-net
 
