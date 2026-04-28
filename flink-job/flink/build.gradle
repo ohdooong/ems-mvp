@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'application'
+    id 'com.gradleup.shadow' version '9.0.0'
 }
 
 group = 'org.example.ems'
@@ -33,6 +33,7 @@ dependencies {
     // Flink core
     compileOnly "org.apache.flink:flink-streaming-java:${flinkVersion}"
     compileOnly "org.apache.flink:flink-clients:${flinkVersion}"
+
 
     // Connectors
     implementation "org.apache.flink:flink-connector-kafka:${flinkKafkaConnectorVersion}"
