@@ -1,4 +1,4 @@
-package org.example.ems;
+package org.example.ems.jobs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;

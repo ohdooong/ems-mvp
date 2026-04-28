@@ -1,4 +1,4 @@
-package org.example.ems;
+package org.example.ems.event;
 
 
 import java.time.Instant;
