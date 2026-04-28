@@ -23,6 +23,7 @@ ext {
     flinkJdbcConnectorVersion =     '3.2.0-1.19'
     jacksonVersion =                '2.17.1'
     postgresqlVersion =             '42.7.3'
+    lombokVersion =                 '1.18.22'
 }
 
 dependencies {
@@ -39,12 +40,15 @@ dependencies {
     implementation "org.apache.flink:flink-connector-kafka:${flinkKafkaConnectorVersion}"
     implementation "org.apache.flink:flink-connector-jdbc:${flinkJdbcConnectorVersion}"
 
+    // lombok
+    implementation "org.projectlombok:lombok:${lombokVersion}"
+
     // Postgresql
     implementation "org.postgresql:postgresql:${postgresqlVersion}"
 }
 
 application {
-    mainClass = 'com.example.ems.SensorLatestJob'
+    mainClass = 'org.example.ems.SensorLatestJob'
 }
 
 shadowJar {
