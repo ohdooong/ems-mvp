@@ -15,6 +15,7 @@ import org.example.ems.event.SensorEvent;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Objects;
+import org.example.ems.util.EnvUtils;
 
 /**
  * The type Sensor latest job.
@@ -86,9 +87,9 @@ public class SensorLatestJob {
                                         .withMaxRetries(3)
                                         .build(),
                                 new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
-                                        .withUrl("jdbc:postgresql://postgres:5432/ems")
+                                        .withUrl(EnvUtils.POSTGRES_URL)
                                         .withDriverName("org.postgresql.Driver")
-                                        .withUsername("ems_user")
+                                        .withUsername(EnvUtils.POSTGRES_USER)
                                         .withPassword("ems_pass")
                                         .build()
                         )
