@@ -31,6 +31,7 @@ public class SensorLatestJob {
      * @throws Exception the exception
      */
     public static void main(String[] args) throws Exception {
+
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
 
