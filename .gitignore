@@ -2,3 +2,4 @@
 .idea
 flink-job/flink/build
 flink-job/flink/.gradle
+.env

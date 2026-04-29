@@ -1,8 +1,7 @@
-package org.example.ems;
+package org.example.ems.jobs;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.connector.jdbc.JdbcConnectionOptions;
@@ -11,10 +10,12 @@ import org.apache.flink.connector.jdbc.JdbcSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.example.ems.event.SensorEvent;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Objects;
+import org.example.ems.util.EnvUtils;
 
 /**
  * The type Sensor latest job.
@@ -49,27 +50,27 @@ public class SensorLatestJob {
                 .addSink(
                         JdbcSink.sink(
                                 """
-                                        INSERT INTO sensor_latest
-                                        (
-                                            device_id,
-                                            site_id,
-                                            zone_id,
-                                            power_usage,
-                                            status,
-                                            event_time,
-                                            ingestion_time,
-                                            updated_at
-                                        )
-                                        VALUES(?, ?, ?, ?, ?, ?, ?, now())
-                                        ON CONFLICT (device_id)
-                                        DO UPDATE SET
-                                            site_id = EXCLUDED.site_id,
-                                            zone_id = EXCLUDED.zone_id,
-                                            power_usage = EXCLUDED.power_usage,
-                                            status = EXCLUDED.status,
-                                            event_time = EXCLUDED.event_time,
-                                            ingestion_time = EXCLUDED.ingestion_time,
-                                            updated_at = CURRENT_TIMESTAMP
+                                    INSERT INTO sensor_latest
+                                    (
+                                        device_id,
+                                        site_id,
+                                        zone_id,
+                                        power_usage,
+                                        status,
+                                        event_time,
+                                        ingestion_time,
+                                        updated_at
+                                    )
+                                    VALUES(?, ?, ?, ?, ?, ?, ?, now())
+                                    ON CONFLICT (device_id)
+                                    DO UPDATE SET
+                                        site_id = EXCLUDED.site_id,
+                                        zone_id = EXCLUDED.zone_id,
+                                        power_usage = EXCLUDED.power_usage,
+                                        status = EXCLUDED.status,
+                                        event_time = EXCLUDED.event_time,
+                                        ingestion_time = EXCLUDED.ingestion_time,
+                                        updated_at = CURRENT_TIMESTAMP
                                         """,
                                 (ps, event) -> {
                                     ps.setString(1, event.getDeviceId());
@@ -86,10 +87,10 @@ public class SensorLatestJob {
                                         .withMaxRetries(3)
                                         .build(),
                                 new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
-                                        .withUrl("jdbc:postgresql://postgres:5432/ems")
+                                        .withUrl(EnvUtils.POSTGRES_URL)
                                         .withDriverName("org.postgresql.Driver")
-                                        .withUsername(EnvUtils.POSTGRES_USERNAME)
-                                        .withPassword(EnvUtils.POSTGRES_PASSWORD)
+                                        .withUsername(EnvUtils.POSTGRES_USER)
+                                        .withPassword("ems_pass")
                                         .build()
                         )
                 );
@@ -98,11 +99,6 @@ public class SensorLatestJob {
         env.execute("EMS Sensor Latest Job");
     }
 
-    /**
-     * json Parse함수
-     * @param raw
-     * @return
-     */
     private static SensorEvent parseJson(String raw) {
         try {
             JsonNode jsonNode = objectMapper.readTree(raw);
