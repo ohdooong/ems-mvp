@@ -48,7 +48,7 @@ dependencies {
 }
 
 application {
-    mainClass = 'org.example.ems.SensorLatestJob'
+    mainClass = 'org.example.ems.jobs.SensorLatestJob'
 }
 
 shadowJar {
