@@ -168,6 +168,10 @@ public class SensorEvent {
         this.ingestionTime = ingestionTime;
     }
 
+    public String getDataStreamKey() {
+        return this.siteId + "|" + this.zoneId;
+    }
+
     /**
      * To string string.
      *

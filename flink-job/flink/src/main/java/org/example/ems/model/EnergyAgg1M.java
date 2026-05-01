@@ -1,17 +1,27 @@
 package org.example.ems.model;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 public class EnergyAgg1M {
     private String siteId;
     private String zoneId;
     private Instant windowStart;
     private Instant windowEnd;
-    private Float avgPowerUsage;
-    private Float totalPowerUsage;
-    private Long eventCount;
+    private double avgPowerUsage;
+    private double totalPowerUsage;
+    private long eventCount;
     private Instant updatedAt;
+
+    public EnergyAgg1M(String siteId, String zoneId, Instant windowStart, Instant windowEnd,
+        double avgPowerUsage, double totalPowerUsage, Long eventCount) {
+        this.siteId = siteId;
+        this.zoneId = zoneId;
+        this.windowStart = windowStart;
+        this.windowEnd = windowEnd;
+        this.avgPowerUsage = avgPowerUsage;
+        this.totalPowerUsage = totalPowerUsage;
+        this.eventCount = eventCount;
+    }
 
     public String getSiteId() {
         return siteId;
@@ -29,11 +39,11 @@ public class EnergyAgg1M {
         return windowEnd;
     }
 
-    public Float getAvgPowerUsage() {
+    public double getAvgPowerUsage() {
         return avgPowerUsage;
     }
 
-    public Float getTotalPowerUsage() {
+    public double getTotalPowerUsage() {
         return totalPowerUsage;
     }
 

@@ -6,23 +6,28 @@ import org.example.ems.model.PowerUsageAccumulator;
 
 public class PowerUsageAggregateFunction implements AggregateFunction<SensorEvent, PowerUsageAccumulator, PowerUsageAccumulator> {
 
+
+
+
     @Override
     public PowerUsageAccumulator createAccumulator() {
-        return null;
+        return new PowerUsageAccumulator();
     }
 
     @Override
     public PowerUsageAccumulator add(SensorEvent value, PowerUsageAccumulator accumulator) {
-        return null;
+        accumulator.add(value.getPowerUsage());
+        return accumulator;
     }
 
     @Override
     public PowerUsageAccumulator getResult(PowerUsageAccumulator accumulator) {
-        return null;
+        return accumulator;
     }
 
     @Override
     public PowerUsageAccumulator merge(PowerUsageAccumulator a, PowerUsageAccumulator b) {
-        return null;
+        a.merge(b);
+        return a;
     }
 }

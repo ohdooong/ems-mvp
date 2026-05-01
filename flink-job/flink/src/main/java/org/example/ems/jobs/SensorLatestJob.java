@@ -16,13 +16,12 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Objects;
 import org.example.ems.util.EnvUtils;
+import org.example.ems.util.EventUtils;
 
 /**
  * The type Sensor latest job.
  */
 public class SensorLatestJob {
-
-    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * The entry point of application.
@@ -45,7 +44,7 @@ public class SensorLatestJob {
             .build();
 
         env.fromSource(kafkaSource, WatermarkStrategy.noWatermarks(), "Kafka Source")
-                .map(SensorLatestJob::parseJson)
+                .map(EventUtils::parseJsonFromSensor)
                 .filter(Objects::nonNull)
                 .returns(SensorEvent.class) // 타입 힌트
                 .addSink(
@@ -100,26 +99,5 @@ public class SensorLatestJob {
         env.execute("EMS Sensor Latest Job");
     }
 
-    /**
-     * json Parse함수
-     * @param raw
-     * @return
-     */
-    private static SensorEvent parseJson(String raw) {
-        try {
-            JsonNode jsonNode = objectMapper.readTree(raw);
-            return new SensorEvent(
-                    jsonNode.get("device_id").asText(),
-                    jsonNode.get("site_id").asText(),
-                    jsonNode.get("zone_id").asText(),
-                    jsonNode.get("power_usage").asDouble(),
-                    jsonNode.get("status").asText(),
-                    Instant.parse(jsonNode.get("event_time").asText()),
-                    Instant.parse(jsonNode.get("ingestion_time").asText())
-            );
-        } catch (Exception e) {
-            System.out.println("Failed to parse event: " + raw);
-            return null;
-        }
-    }
+
 }
